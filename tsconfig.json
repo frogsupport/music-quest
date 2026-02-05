@@ -9,7 +9,8 @@
     // See also https://aka.ms/tsconfig/module
     "module": "preserve",
     "target": "esnext",
-    "types": [],
+    "jsx": "react-jsx",
+    // "types": [],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -28,13 +29,13 @@
     // "noImplicitReturns": true,
     // "noImplicitOverride": true,
     // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
+    "noUnusedParameters": true,
     // "noFallthroughCasesInSwitch": true,
     // "noPropertyAccessFromIndexSignature": true,
 
     // Recommended Options
     "strict": true,
-    "verbatimModuleSyntax": true,
+    // "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
