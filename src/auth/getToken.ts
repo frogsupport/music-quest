@@ -1,6 +1,4 @@
-const redirectUri = import.meta.env.PROD
-  ? "https://music-quest.vercel.app/"
-  : "http://127.0.0.1:5173";
+import { redirectUri } from "./redirectUri";
 
 export const getToken = async ({ clientId }: { clientId: string }) => {
   const urlParams = new URLSearchParams(window.location.search);

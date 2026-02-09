@@ -1,6 +1,4 @@
-const redirectUri = import.meta.env.PROD
-  ? "https://music-quest.vercel.app/"
-  : "http://127.0.0.1:5173";
+import { redirectUri } from "./redirectUri";
 
 const generateRandomString = ({ length }: { length: number }) => {
   const possible =
