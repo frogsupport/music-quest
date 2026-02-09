@@ -4,16 +4,19 @@ import { getToken } from "../auth/getToken";
 import { redirectToSpotify } from "../auth/redirectToSpotify";
 
 export default function Home() {
-  const accessToken = localStorage.getItem("access_token");
+  let accessToken = localStorage.getItem("access_token");
+  if (accessToken === "undefined") {
+    accessToken = null;
+  }
   const code = new URLSearchParams(window.location.search).get("code");
-  const [clientId, setClientId] = useState(
-    localStorage.getItem("client_id") ?? "",
-  );
+  const [clientId, setClientId] = useState(localStorage.getItem("client_id"));
   const [profileData, setProfileData] = useState(undefined);
 
   const handleSubmit = (formData: FormData) => {
-    const clientIdFormValue = formData.get("clientId")?.toString() ?? "";
-    console.log(clientIdFormValue);
+    const clientIdFormValue = formData.get("clientId")?.toString();
+    if (!clientIdFormValue) {
+      return;
+    }
     setClientId(clientIdFormValue);
     localStorage.setItem("client_id", clientIdFormValue);
   };
@@ -31,15 +34,13 @@ export default function Home() {
   }, [accessToken, clientId, code]);
 
   useEffect(() => {
-    if (!accessToken) {
-      return;
-    }
     async function getProfileData() {
       const data = await getProfile();
-      console.log({ data });
       setProfileData(data);
     }
-    getProfileData();
+    if (accessToken) {
+      getProfileData();
+    }
   }, [accessToken]);
 
   return (

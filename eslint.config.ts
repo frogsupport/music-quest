@@ -30,6 +30,7 @@ export default defineConfig([
       },
     },
     rules: {
+      "no-console": ["error", { allow: ["warn", "error"] }],
       "react/no-unescaped-entities": "off",
       "react/prop-types": "off",
     },
