@@ -27,7 +27,7 @@ export default function Home() {
     }
 
     if (code) {
-      getToken({ clientId });
+      getToken({ clientId, code });
     } else {
       redirectToSpotify({ clientId });
     }
@@ -35,12 +35,13 @@ export default function Home() {
 
   useEffect(() => {
     async function getProfileData() {
+      if (!accessToken) {
+        return;
+      }
       const data = await getProfile();
       setProfileData(data);
     }
-    if (accessToken) {
-      getProfileData();
-    }
+    getProfileData();
   }, [accessToken]);
 
   return (

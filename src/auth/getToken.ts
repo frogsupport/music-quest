@@ -1,9 +1,12 @@
 import { redirectUri } from "./redirectUri";
 
-export const getToken = async ({ clientId }: { clientId: string }) => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get("code");
-  // stored in the previous step
+export const getToken = async ({
+  clientId,
+  code,
+}: {
+  clientId: string;
+  code: string;
+}) => {
   const codeVerifier = localStorage.getItem("code_verifier");
 
   const url = "https://accounts.spotify.com/api/token";
