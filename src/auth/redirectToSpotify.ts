@@ -1,5 +1,3 @@
-import { redirectUri } from "./redirectUri";
-
 const generateRandomString = ({ length }: { length: number }) => {
   const possible =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -8,7 +6,8 @@ const generateRandomString = ({ length }: { length: number }) => {
   return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 };
 
-export const redirectToSpotify = async ({ clientId }: { clientId: string }) => {
+export const redirectToSpotify = async () => {
+  const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
   const scope = "user-read-private user-read-email";
   const authUrl = new URL("https://accounts.spotify.com/authorize");
 
@@ -38,7 +37,7 @@ export const redirectToSpotify = async ({ clientId }: { clientId: string }) => {
     scope,
     code_challenge_method: "S256",
     code_challenge: codeChallenge,
-    redirect_uri: redirectUri,
+    redirect_uri: import.meta.env.VITE_SPOTIFY_AUTH_REDIRECT_URI,
   };
 
   authUrl.search = new URLSearchParams(params).toString();

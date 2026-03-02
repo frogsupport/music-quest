@@ -1,20 +1,26 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import Home from "./pages/Home";
+import { BrowserRouter } from "react-router";
+import { lazy, Suspense } from "react";
+import { useAuthContext } from "./providers/AuthProvider";
 
-const App = () => {
+const MusicQuestRoutes = lazy(() => import("./routes/MusicQuestRoutes"));
+const UnauthenticatedAppRoutes = lazy(
+  () => import("./routes/UnauthenticatedAppRoutes"),
+);
+
+export const App = () => {
+  const { accessToken } = useAuthContext();
+
   return (
-    <StrictMode>
-      <Home />
-    </StrictMode>
+    <BrowserRouter>
+      {accessToken ? (
+        <Suspense>
+          <MusicQuestRoutes />
+        </Suspense>
+      ) : (
+        <Suspense>
+          <UnauthenticatedAppRoutes />
+        </Suspense>
+      )}
+    </BrowserRouter>
   );
 };
-
-let container = document.getElementById("root");
-if (!container) {
-  container = document.createElement("div");
-  container.id = "root";
-}
-
-const root = createRoot(container);
-root.render(<App />);

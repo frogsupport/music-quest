@@ -1,12 +1,5 @@
-import { redirectUri } from "./redirectUri";
-
-export const getToken = async ({
-  clientId,
-  code,
-}: {
-  clientId: string;
-  code: string;
-}) => {
+export const getToken = async ({ code }: { code: string }) => {
+  const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
   const codeVerifier = localStorage.getItem("code_verifier");
 
   const url = "https://accounts.spotify.com/api/token";
@@ -23,7 +16,7 @@ export const getToken = async ({
       client_id: clientId,
       grant_type: "authorization_code",
       code,
-      redirect_uri: redirectUri,
+      redirect_uri: import.meta.env.VITE_SPOTIFY_AUTH_REDIRECT_URI,
       code_verifier: codeVerifier,
     }),
   };
@@ -31,5 +24,5 @@ export const getToken = async ({
   const body = await fetch(url, payload);
   const response = await body.json();
 
-  localStorage.setItem("access_token", response.access_token);
+  return response;
 };
