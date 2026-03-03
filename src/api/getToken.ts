@@ -1,4 +1,10 @@
-export const getToken = async ({ code }: { code: string }) => {
+export const getToken = async ({
+  code,
+  signal,
+}: {
+  code: string;
+  signal: AbortSignal;
+}) => {
   const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
   const codeVerifier = localStorage.getItem("code_verifier");
 
@@ -20,6 +26,7 @@ export const getToken = async ({ code }: { code: string }) => {
       redirect_uri: import.meta.env.VITE_SPOTIFY_AUTH_REDIRECT_URI,
       code_verifier: codeVerifier,
     }),
+    signal,
   };
 
   const body = await fetch(url, payload);
