@@ -3,7 +3,7 @@ import "./Login.css";
 
 export default function Login() {
   return (
-    <div className="wrapper">
+    <div className="login-wrapper">
       <div>
         <h1 className="title">Login</h1>
         <button className="login-button" onClick={() => redirectToSpotify()}>
