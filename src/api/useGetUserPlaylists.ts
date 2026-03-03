@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSpotifySdkContext } from "../providers/SpotifySdkProvider";
-import { UserProfile } from "@spotify/web-api-ts-sdk";
+import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk";
 
-export function useGetUserProfile() {
-  const [userProfile, setUserProfile] = useState<undefined | UserProfile>(
+export function useGetUserPlaylists() {
+  const [playlists, setPlaylists] = useState<undefined | SimplifiedPlaylist[]>(
     undefined,
   );
   const [loading, setLoading] = useState(false);
@@ -13,14 +13,16 @@ export function useGetUserProfile() {
     async function asyncGetUserProfile() {
       setLoading(true);
 
-      const stuff = await sdk.currentUser.profile();
+      const data = await sdk.currentUser.playlists.playlists();
 
-      setUserProfile(stuff);
+      console.log({ data });
+
+      setPlaylists(data.items);
       setLoading(false);
     }
 
     asyncGetUserProfile();
   }, [sdk.currentUser]);
 
-  return { data: userProfile, loading };
+  return { data: playlists, loading };
 }

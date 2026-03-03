@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router";
 import { lazy, Suspense } from "react";
-import Layout from "../components/layout/Layout";
+import AuthLayout from "../components/layout/AuthLayout";
 
 const SpotifyAuthRedirect = lazy(() => import("../pages/auth/Auth"));
 const Login = lazy(() => import("../pages/login/Login"));
@@ -8,7 +8,7 @@ const Login = lazy(() => import("../pages/login/Login"));
 const UnauthenticatedRoutes = () => {
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route element={<AuthLayout />}>
         <Route path="*" element={<Navigate to="/login" />} />
         <Route
           path="login"

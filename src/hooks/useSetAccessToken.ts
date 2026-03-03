@@ -5,7 +5,7 @@ import { getToken } from "../api/getToken";
 
 export function useSetAccessToken() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { setAccessToken } = useAuthContext();
+  const { setToken: setAccessToken } = useAuthContext();
 
   useEffect(() => {
     // Because this function runs twice with the code in the search params
@@ -19,9 +19,7 @@ export function useSetAccessToken() {
         if (token.error) {
           console.error(token.error);
         } else if (token.access_token) {
-          setAccessToken({
-            accessToken: token.access_token,
-          });
+          setAccessToken(token);
           setSearchParams((prev) => {
             prev.delete("code");
             return prev;

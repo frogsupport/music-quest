@@ -1,25 +1,22 @@
+import { AccessToken } from "@spotify/web-api-ts-sdk";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 
-type Token = {
-  accessToken: string;
-};
-
 type AuthContext = {
-  accessToken?: string;
-  setAccessToken: (token: Token) => void;
+  token?: AccessToken;
+  setToken: (token: AccessToken) => void;
 };
 
 const AuthContext = createContext<AuthContext | undefined>(undefined);
 
 export function AuthProvider(props: PropsWithChildren) {
   const { children } = props;
-  const [token, setToken] = useState<Token | undefined>(undefined);
+  const [token, setToken] = useState<AccessToken | undefined>(undefined);
 
   return (
     <AuthContext
       value={{
-        accessToken: token?.accessToken,
-        setAccessToken: setToken,
+        token: token,
+        setToken: setToken,
       }}
     >
       {children}
