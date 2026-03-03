@@ -4,12 +4,8 @@ import "./Login.css";
 export default function Login() {
   return (
     <div className="login-wrapper">
-      <div>
-        <h1 className="title">Login</h1>
-        <button className="login-button" onClick={() => redirectToSpotify()}>
-          Login to Spotify
-        </button>
-      </div>
+      <h2>Login</h2>
+      <button onClick={() => redirectToSpotify()}>Login to Spotify</button>
     </div>
   );
 }

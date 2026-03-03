@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { lazy, Suspense } from "react";
 import Layout from "../components/layout/Layout";
 
-const SpotifyAuthRedirect = lazy(() => import("../pages/Auth"));
+const SpotifyAuthRedirect = lazy(() => import("../pages/auth/Auth"));
 const Login = lazy(() => import("../pages/login/Login"));
 
 const UnauthenticatedRoutes = () => {

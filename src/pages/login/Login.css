@@ -1,7 +1,10 @@
 .login-wrapper {
-  margin-top: 50%;
+  margin-top: 10rem;
 }
-.login-button {
+h2 {
+  font-size: 2rem;
+}
+button {
   font-size: 1rem;
   padding: 12px;
   background-color: #69ffe6;
