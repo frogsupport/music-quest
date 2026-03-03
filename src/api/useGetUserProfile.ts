@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useGetAuthHeader } from "../auth/useGetAuthHeader";
 
 export function useGetUserProfile() {
-  const [userProfile, setUserProfile] = useState<undefined | { name?: string }>(
-    undefined,
-  );
+  const [userProfile, setUserProfile] = useState<
+    undefined | { name?: string; error?: { status: number } }
+  >(undefined);
   const headers = useGetAuthHeader();
 
   useEffect(() => {

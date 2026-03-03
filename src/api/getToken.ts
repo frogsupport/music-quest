@@ -7,6 +7,7 @@ export const getToken = async ({ code }: { code: string }) => {
   if (!codeVerifier || !code) {
     return;
   }
+
   const payload = {
     method: "POST",
     headers: {

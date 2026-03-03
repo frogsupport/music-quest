@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from "react-router";
 import { lazy, Suspense } from "react";
 
-const SpotifyAuthRedirect = lazy(() => import("../pages/SpotifyAuthRedirect"));
+const SpotifyAuthRedirect = lazy(() => import("../pages/Auth"));
 const Login = lazy(() => import("../pages/Login"));
 
-const MusicQuestRoutes = () => {
+const UnauthenticatedRoutes = () => {
   return (
     <Routes>
       <Route path="*" element={<Navigate to="/login" />} />
@@ -28,4 +28,4 @@ const MusicQuestRoutes = () => {
   );
 };
 
-export default MusicQuestRoutes;
+export default UnauthenticatedRoutes;

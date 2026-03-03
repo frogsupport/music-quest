@@ -1,26 +1,21 @@
-import { BrowserRouter } from "react-router";
-import { lazy, Suspense } from "react";
-import { useAuthContext } from "./providers/AuthProvider";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { AppRouter } from "./routes/AppRouter";
+import { AuthProvider } from "./providers/AuthProvider";
 
-const MusicQuestRoutes = lazy(() => import("./routes/MusicQuestRoutes"));
-const UnauthenticatedAppRoutes = lazy(
-  () => import("./routes/UnauthenticatedAppRoutes"),
+let container = document.getElementById("root");
+
+if (!container) {
+  container = document.createElement("div");
+  container.id = "root";
+}
+
+const root = createRoot(container);
+
+root.render(
+  <StrictMode>
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
+  </StrictMode>,
 );
-
-export const App = () => {
-  const { accessToken } = useAuthContext();
-
-  return (
-    <BrowserRouter>
-      {accessToken ? (
-        <Suspense>
-          <MusicQuestRoutes />
-        </Suspense>
-      ) : (
-        <Suspense>
-          <UnauthenticatedAppRoutes />
-        </Suspense>
-      )}
-    </BrowserRouter>
-  );
-};

@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { getToken } from "../api/getToken";
 import { useSearchParams } from "react-router";
 import { useAuthContext } from "../providers/AuthProvider";
+import { getToken } from "../api/getToken";
 
-export default function SpotifyAuthRedirect() {
+export function useSetAccessToken() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { setAccessToken, accessToken } = useAuthContext();
+  const { setAccessToken } = useAuthContext();
 
   useEffect(() => {
     async function asyncGetToken({ code }: { code: string }) {
@@ -16,8 +16,6 @@ export default function SpotifyAuthRedirect() {
       } else if (token.access_token) {
         setAccessToken({
           accessToken: token.access_token,
-          expiresIn: token.expires_in,
-          refreshToken: token.refresh_token,
         });
         setSearchParams((prev) => {
           prev.delete("code");
@@ -32,11 +30,4 @@ export default function SpotifyAuthRedirect() {
       asyncGetToken({ code });
     }
   }, [searchParams, setAccessToken, setSearchParams]);
-
-  return (
-    <div>
-      <h1>Spotify Auth Redirect</h1>
-      {accessToken ? accessToken : "No Token Saddd"}
-    </div>
-  );
 }
