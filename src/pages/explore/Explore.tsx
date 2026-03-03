@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useGetUserPlaylists } from "../../api/useGetUserPlaylists";
 import "./Explore.css";
-import recommendations from "../../../app/api/recommendations";
+import recommendations from "../../../api/recommendations";
 import { useAuthContext } from "../../providers/AuthProvider";
 
 // TODO: Build a flow for getting a reccomended next track
