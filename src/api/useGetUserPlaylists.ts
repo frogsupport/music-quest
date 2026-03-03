@@ -15,8 +15,6 @@ export function useGetUserPlaylists() {
 
       const data = await sdk.currentUser.playlists.playlists();
 
-      console.log({ data });
-
       setPlaylists(data.items);
       setLoading(false);
     }
