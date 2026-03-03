@@ -1,0 +1,10 @@
+.wrapper {
+  margin-top: 20%;
+}
+.login-button {
+  font-size: 1rem;
+  padding: 12px;
+  background-color: #69ffe6;
+  border-radius: 20px;
+  border: 0;
+}
