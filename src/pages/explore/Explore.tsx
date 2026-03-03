@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useGetUserPlaylists } from "../../api/useGetUserPlaylists";
 import "./Explore.css";
+import recommendations from "../../../app/api/recommendations";
+import { useAuthContext } from "../../providers/AuthProvider";
 
 // TODO: Build a flow for getting a reccomended next track
 // Click on a playlist
@@ -15,10 +17,16 @@ import "./Explore.css";
 // If we click on another playlist go through the flow again
 
 export default function Explore() {
+  const { token } = useAuthContext();
   const { data: playlists } = useGetUserPlaylists();
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState<
+    string | undefined
+  >(undefined);
+
+  const stuff = recommendations.fetch({
+    accessToken: token?.access_token,
+    playlistId: selectedPlaylistId,
+  });
 
   return (
     <main>
@@ -27,12 +35,13 @@ export default function Explore() {
         <button
           style={{ margin: "4px" }}
           key={playlist.id}
-          onClick={() => setSelectedPlaylist(playlist.id)}
+          onClick={() => setSelectedPlaylistId(playlist.id)}
         >
           {playlist.name}
-          {selectedPlaylist === playlist.id ? <>✅</> : null}
+          {selectedPlaylistId === playlist.id ? <>✅</> : null}
         </button>
       ))}
+      {stuff}
     </main>
   );
 }
