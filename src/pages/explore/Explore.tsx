@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useGetUserPlaylists } from "../../api/useGetUserPlaylists";
 import "./Explore.css";
-import recommendations from "../../../api/recommendations";
-import { useAuthContext } from "../../providers/AuthProvider";
+import { useGetRecommendations } from "../../api/useGetRecommedations";
+import { Spinner } from "../../components/spinner/Spinner";
 
 // TODO: Build a flow for getting a reccomended next track
 // Click on a playlist
@@ -17,14 +17,12 @@ import { useAuthContext } from "../../providers/AuthProvider";
 // If we click on another playlist go through the flow again
 
 export default function Explore() {
-  const { token } = useAuthContext();
   const { data: playlists } = useGetUserPlaylists();
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<
     string | undefined
   >(undefined);
 
-  const stuff = recommendations.fetch({
-    accessToken: token?.access_token,
+  const { data: recommendations, loading } = useGetRecommendations({
     playlistId: selectedPlaylistId,
   });
 
@@ -41,7 +39,15 @@ export default function Explore() {
           {selectedPlaylistId === playlist.id ? <>✅</> : null}
         </button>
       ))}
-      {stuff}
+      {loading ? (
+        <Spinner />
+      ) : (
+        recommendations?.content.map((content) =>
+          content.type === "text" ? (
+            <div key={content.text}>{content.text}</div>
+          ) : null,
+        )
+      )}
     </main>
   );
 }

@@ -1,13 +1,18 @@
-type RecommendationRequest = {
-  accessToken?: string;
-  playlistId?: string;
-};
+import Anthropic from "@anthropic-ai/sdk";
+import { VercelRequest, VercelResponse } from "@vercel/node";
 
-export default {
-  fetch({ accessToken, playlistId }: RecommendationRequest) {
-    if (!accessToken || !playlistId) {
-      return;
-    }
-    return "hello world";
-  },
-};
+const claudeApiKey = process.env.CLAUDE_API_KEY;
+
+const client = new Anthropic({
+  apiKey: claudeApiKey,
+});
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const message = await client.messages.create({
+    max_tokens: 1024,
+    messages: [{ role: "user", content: "Hello, Claude. Be super brief." }],
+    model: "claude-sonnet-4-6",
+  });
+
+  return res.status(200).json(message);
+}
