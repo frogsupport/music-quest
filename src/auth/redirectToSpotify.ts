@@ -8,7 +8,8 @@ const generateRandomString = ({ length }: { length: number }) => {
 
 export const redirectToSpotify = async () => {
   const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-  const scope = "user-read-private user-read-email";
+  const scope =
+    "user-read-private user-read-email streaming user-modify-playback-state";
   const authUrl = new URL("https://accounts.spotify.com/authorize");
 
   const codeVerifier = generateRandomString({ length: 64 });

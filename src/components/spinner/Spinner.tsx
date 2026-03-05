@@ -17,7 +17,7 @@ export function Spinner({ size = 40 }: SpinnerProps) {
         r="20"
         fill="none"
         stroke={color}
-        strokeWidth="2"
+        strokeWidth="1"
         strokeLinecap="round"
       />
     </svg>

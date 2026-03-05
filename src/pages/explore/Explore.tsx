@@ -3,6 +3,8 @@ import { useGetUserPlaylists } from "../../api/useGetUserPlaylists";
 import "./Explore.css";
 import { useGetRecommendations } from "../../api/useGetRecommedations";
 import { Spinner } from "../../components/spinner/Spinner";
+import { useSpotifyWebPlaybackContext } from "../../providers/SpotifyWebPlaybackProvider";
+import { usePlayTrack } from "../../api/usePlayTrack";
 
 // TODO: Build a flow for getting a reccomended next track
 // Click on a playlist
@@ -21,22 +23,27 @@ export default function Explore() {
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<
     string | undefined
   >(undefined);
+  const { player } = useSpotifyWebPlaybackContext();
 
   const { data: recommendations, loading } = useGetRecommendations({
     playlistId: selectedPlaylistId,
   });
 
+  usePlayTrack({ contextUri: selectedPlaylistId });
+
   return (
     <main>
+      <button onClick={() => player.resume()}>Play</button>
+      <button onClick={() => player.pause()}>Pause</button>
       <h2>Explore</h2>
       {playlists?.map((playlist) => (
         <button
           style={{ margin: "4px" }}
           key={playlist.id}
-          onClick={() => setSelectedPlaylistId(playlist.id)}
+          onClick={() => setSelectedPlaylistId(playlist.uri)}
         >
           {playlist.name}
-          {selectedPlaylistId === playlist.id ? <>✅</> : null}
+          {selectedPlaylistId === playlist.uri ? <>✅</> : null}
         </button>
       ))}
       {loading ? (

@@ -40,6 +40,6 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "types": ["vite/client"]
+    "types": ["vite/client", "@types/spotify-web-playback-sdk"]
   }
 }
