@@ -1,29 +1,29 @@
 import { useEffect, useState } from "react";
 import { useSpotifySdkContext } from "../providers/SpotifySdkProvider";
-import { TrackItem } from "@spotify/web-api-ts-sdk";
+import { PlaybackState } from "@spotify/web-api-ts-sdk";
 
-export function useGetCurrentlyPlayingTrack() {
-  const [track, setTrack] = useState<undefined | TrackItem>(undefined);
+export function useGetPlaybackState() {
+  const [track, setPlaybackState] = useState<undefined | PlaybackState>(
+    undefined,
+  );
   const [loading, setLoading] = useState(false);
   const { sdk } = useSpotifySdkContext();
-  const [random, setRandom] = useState(crypto.randomUUID());
 
   useEffect(() => {
     async function asyncGetUserProfile() {
       setLoading(true);
 
-      const data = await sdk.player.getCurrentlyPlayingTrack();
+      const data = await sdk.player.getPlaybackState();
 
-      setTrack(data.item);
+      setPlaybackState(data);
       setLoading(false);
     }
 
     asyncGetUserProfile();
-  }, [sdk.player, random]);
+  }, [sdk.player]);
 
   return {
     data: track,
     loading,
-    refetch: () => setRandom(crypto.randomUUID()),
   };
 }

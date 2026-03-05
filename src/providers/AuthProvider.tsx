@@ -10,13 +10,27 @@ const AuthContext = createContext<AuthContext | undefined>(undefined);
 
 export function AuthProvider(props: PropsWithChildren) {
   const { children } = props;
-  const [token, setToken] = useState<AccessToken | undefined>(undefined);
+
+  const [token, setToken] = useState<AccessToken | undefined>(() => {
+    const cached = JSON.parse(localStorage.getItem("access_token") ?? "null");
+    const isTokenValid = cached?.expires > Date.now();
+    return isTokenValid ? cached : undefined;
+  });
 
   return (
     <AuthContext
       value={{
         token: token,
-        setToken: setToken,
+        setToken: (token: AccessToken) => {
+          localStorage.setItem(
+            "access_token",
+            JSON.stringify({
+              ...token,
+              expires: token.expires ?? Date.now() + token.expires_in * 1000,
+            }),
+          );
+          setToken(token);
+        },
       }}
     >
       {children}

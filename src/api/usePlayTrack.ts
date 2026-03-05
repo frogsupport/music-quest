@@ -1,29 +1,17 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { useSpotifySdkContext } from "../providers/SpotifySdkProvider";
 import { useSpotifyWebPlaybackContext } from "../providers/SpotifyWebPlaybackProvider";
 
-type UsePlayTrackProps = {
-  contextUri?: Parameters<
-    ReturnType<
-      typeof useSpotifySdkContext
-    >["sdk"]["player"]["startResumePlayback"]
-  >[1];
-  trackUris?: Parameters<
-    ReturnType<
-      typeof useSpotifySdkContext
-    >["sdk"]["player"]["startResumePlayback"]
-  >[2];
-};
-
-export function usePlayTrack({ contextUri, trackUris }: UsePlayTrackProps) {
+export function usePlayTrack() {
   const { sdk } = useSpotifySdkContext();
   const { deviceId } = useSpotifyWebPlaybackContext();
 
-  useEffect(() => {
-    async function asyncGetUserProfile() {
-      await sdk.player.startResumePlayback(deviceId, contextUri, trackUris);
-    }
+  const playTrack = useCallback(
+    async (trackUris: string[]) => {
+      await sdk.player.startResumePlayback(deviceId, undefined, trackUris);
+    },
+    [deviceId, sdk.player],
+  );
 
-    asyncGetUserProfile();
-  }, [contextUri, deviceId, sdk.player, trackUris]);
+  return { playTrack };
 }
