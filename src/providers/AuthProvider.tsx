@@ -8,19 +8,37 @@ type AuthContext = {
 
 const AuthContext = createContext<AuthContext | undefined>(undefined);
 
+const isToken = (token: unknown): token is AccessToken => {
+  return typeof token === "object" && token !== null && "access_token" in token;
+};
+
 export function AuthProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [token, setToken] = useState<AccessToken | undefined>(() => {
-    const cached = JSON.parse(localStorage.getItem("access_token") ?? "null");
-    const isTokenValid = cached?.expires > Date.now();
-    return isTokenValid ? cached : undefined;
+    try {
+      const localStorageCachedToken = localStorage.getItem("access_token");
+      const cachedToken = JSON.parse(localStorageCachedToken ?? "null");
+
+      if (!isToken(cachedToken)) {
+        localStorage.removeItem("access_token");
+        return undefined;
+      }
+
+      const isTokenValid =
+        cachedToken.expires && cachedToken.expires > Date.now();
+
+      return isTokenValid ? cachedToken : undefined;
+    } catch (e) {
+      localStorage.removeItem("access_token");
+      console.error(e);
+    }
   });
 
   return (
     <AuthContext
       value={{
-        token: token,
+        token,
         setToken: (token: AccessToken) => {
           localStorage.setItem(
             "access_token",
