@@ -12,6 +12,8 @@ import useStartTransferPlayback from "../api/useStartTransferPlayback";
 type SpotifyWebPlaybackContext = {
   player: Spotify.Player;
   deviceId: string;
+  currentTrack?: Spotify.Track;
+  isPlaying: boolean;
 };
 
 const SpotifyWebPlaybackContext = createContext<
@@ -21,7 +23,11 @@ const SpotifyWebPlaybackContext = createContext<
 export function SpotifyWebPlaybackProvider(props: PropsWithChildren) {
   const { children } = props;
   const [player, setPlayer] = useState<Spotify.Player | undefined>(undefined);
+  const [currentTrack, setCurrentTrack] = useState<Spotify.Track | undefined>(
+    undefined,
+  );
   const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
+  const [isPlaying, setIsPlaying] = useState(false);
   const { token } = useAuthContext();
 
   useEffect(() => {
@@ -48,6 +54,13 @@ export function SpotifyWebPlaybackProvider(props: PropsWithChildren) {
         setDeviceId(device_id);
       });
 
+      player.addListener("player_state_changed", (state) => {
+        if (state) {
+          setCurrentTrack(state.track_window.current_track);
+          setIsPlaying(!state.paused);
+        }
+      });
+
       player.connect();
 
       setPlayer(player);
@@ -59,7 +72,9 @@ export function SpotifyWebPlaybackProvider(props: PropsWithChildren) {
   const isReady = player && deviceId;
 
   return isReady ? (
-    <SpotifyWebPlaybackContext value={{ player, deviceId }}>
+    <SpotifyWebPlaybackContext
+      value={{ player, deviceId, currentTrack, isPlaying }}
+    >
       {children}
     </SpotifyWebPlaybackContext>
   ) : (

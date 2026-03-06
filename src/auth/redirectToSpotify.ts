@@ -8,8 +8,8 @@ const generateRandomString = ({ length }: { length: number }) => {
 
 export const redirectToSpotify = async () => {
   const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-  const scope =
-    "user-read-private user-read-email streaming user-modify-playback-state user-read-currently-playing";
+  const scopes =
+    "user-read-private user-read-email streaming user-modify-playback-state user-read-currently-playing playlist-modify-public playlist-modify-private";
   const authUrl = new URL("https://accounts.spotify.com/authorize");
 
   const codeVerifier = generateRandomString({ length: 64 });
@@ -35,7 +35,7 @@ export const redirectToSpotify = async () => {
   const params = {
     response_type: "code",
     client_id: clientId,
-    scope,
+    scope: scopes,
     code_challenge_method: "S256",
     code_challenge: codeChallenge,
     redirect_uri: import.meta.env.VITE_SPOTIFY_AUTH_REDIRECT_URI,

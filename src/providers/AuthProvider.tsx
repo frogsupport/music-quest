@@ -4,6 +4,7 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 type AuthContext = {
   token?: AccessToken;
   setToken: (token: AccessToken) => void;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContext | undefined>(undefined);
@@ -49,6 +50,7 @@ export function AuthProvider(props: PropsWithChildren) {
           );
           setToken(token);
         },
+        logout: () => setToken(undefined),
       }}
     >
       {children}
