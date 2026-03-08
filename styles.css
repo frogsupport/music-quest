@@ -26,11 +26,7 @@ button {
   border-radius: 20px;
   border: 0;
   height: fit-content;
-  transition: background-color 2s ease-out;
 }
 button:hover {
   cursor: pointer;
-}
-button:active {
-  background-color: yellow;
 }
