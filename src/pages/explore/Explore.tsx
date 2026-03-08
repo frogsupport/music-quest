@@ -7,6 +7,7 @@ import { useSpotifyWebPlaybackContext } from "../../providers/SpotifyWebPlayback
 import { usePlayTrack } from "../../api/usePlayTrack";
 import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk";
 import useAddItemsToPlaylist from "../../api/useAddItemsToPlaylist";
+import Button from "../../components/button/Button";
 
 export default function Explore() {
   const [selectedPlaylist, setSelectedPlaylist] = useState<
@@ -119,11 +120,11 @@ export default function Explore() {
           <div
             style={{ display: "flex", gap: "12px", justifyContent: "center" }}
           >
-            <button onClick={() => player.resume()}>Play</button>
-            <button onClick={() => player.pause()}>Pause</button>
-            <button onClick={() => player.nextTrack()}>Next</button>
+            <Button onClick={() => player.resume()}>Play</Button>
+            <Button onClick={() => player.pause()}>Pause</Button>
+            <Button onClick={() => player.nextTrack()}>Next</Button>
             {shouldShowAddButton ? (
-              <button
+              <Button
                 onClick={() =>
                   addItemsToPlaylist({
                     playlistId: currentlyPlayingPlaylist.id,
@@ -132,7 +133,7 @@ export default function Explore() {
                 }
               >
                 Add
-              </button>
+              </Button>
             ) : null}
           </div>
         </div>
@@ -148,7 +149,7 @@ export default function Explore() {
       >
         <h2 style={{ margin: 0 }}>Explore</h2>
         {shouldShowPlayNextRecommendationButton ? (
-          <button
+          <Button
             onClick={() => {
               if (!hasStartedPlayingRecommendations && recommendationUris) {
                 playTrack(recommendationUris);
@@ -159,7 +160,7 @@ export default function Explore() {
             }}
           >
             Play {selectedPlaylist?.name} Recommendations
-          </button>
+          </Button>
         ) : null}
         {loadingRecommendations ? (
           <span style={{ justifySelf: "center" }}>
@@ -168,7 +169,7 @@ export default function Explore() {
         ) : null}
       </div>
       {playlists?.map((playlist) => (
-        <button
+        <Button
           style={{ margin: "4px" }}
           key={playlist.id}
           onClick={() => {
@@ -178,7 +179,7 @@ export default function Explore() {
         >
           {playlist.name}
           {selectedPlaylist?.id === playlist.id ? <>✅</> : null}
-        </button>
+        </Button>
       ))}
     </main>
   );
